@@ -1,18 +1,42 @@
 .main{
-    padding: 20px;
+    
     div{
+        padding: 20px;
         display: flex;
         flex-direction: column;
+        width: 100%;
+        background-color: blue;
         gap: 12px;
         margin-bottom: 20px;
-        
+        align-items: end;
+        h1{
+        width: 350px;
+        }
+
+        img{
+        border-radius: 12px;
+        }
+
         p{
             width: 450px;
             line-height: 1.5;
         }
+        margin-bottom: 20px;
+
+        span{
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: green;
+        }
     }
     .form{
-        input,textarea{
+        padding: 20px;
+
+        h2{
+            font-size: 2rem;
+          margin-bottom: 12px;  
+        }
+        input,textarea,select{
             display: block;
             margin-top: 4px;
             margin-bottom: 12px;

@@ -15,7 +15,7 @@ export default function Page(){
     const passwordFilter = emailFilter.filter(owner=>(owner.password === password))
 
     if(passwordFilter.length>0){
-      localStorage.setItem('Usuario Logado' , JSON.stringify({name:passwordFilter[0].name,email,Ownerid:passwordFilter[0].ownerid}))
+      localStorage.setItem('Usuario Logado' , JSON.stringify({name:passwordFilter[0].name,email,ownerid:passwordFilter[0].ownerid,avatar:passwordFilter[0].avatar}))
       alert('Login efetuado com sucesso')  
     setTimeout(() => {
         window.location.href = '/dashboard'

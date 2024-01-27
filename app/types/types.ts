@@ -3,7 +3,8 @@ export type Owner = {
     name : string
     email : string
     password : string
-    Ownerid : string
+    ownerid : string
+    avatar : string
 }
 
 export type Product = {
@@ -13,6 +14,7 @@ export type Product = {
     price : string
     category : string
     ownerid : string
+    photo: string
 }
 
 export type Category = {

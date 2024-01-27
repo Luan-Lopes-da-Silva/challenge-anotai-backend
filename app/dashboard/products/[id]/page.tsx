@@ -1,18 +1,17 @@
 'use client'
 
-import { Product } from "@/app/types/types"
-import { FormEvent, useEffect, useRef, useState } from "react"
+import { Category, Product } from "@/app/types/types"
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import style from '@/app/styles/productPage.module.scss'
+import LayoutAdminDashboard from "@/app/layouts/LayoutDashboard"
 
 
 export default function Page({params}:any){
     const refTitle = useRef<HTMLHeadingElement>(null) 
     const refDescription = useRef<HTMLParagraphElement>(null) 
     const refPrice = useRef<HTMLSpanElement>(null) 
-    const refInputTitle = useRef<HTMLInputElement>(null)
-    const refInputCategory = useRef<HTMLInputElement>(null)
-    const refInputDescription = useRef<HTMLTextAreaElement>(null)
-    const refInputPrice = useRef<HTMLInputElement>(null)
+    const productImgRef = useRef<HTMLImageElement>(null)
+    const refForm = useRef<HTMLFormElement>(null)
     const [title,setTitle] = useState('')
     const [price,setPrice] = useState('')
     const [description,setDescription] = useState('')
@@ -22,16 +21,51 @@ export default function Page({params}:any){
     async function getProductFromId() {
     const callDb =  await fetch(`http://localhost:3333/products/${params.id}`)
     const dbConversed:Product[] = await callDb.json()
+    const categoryDb = await fetch("http://localhost:3333/categorys")
+    const categoryConversed:Category[] = await categoryDb.json()
     
-    if(refTitle.current && refDescription.current && refPrice.current){
+    const selectInput = document.createElement('select')
+    selectInput.value = category
+    selectInput.addEventListener("change",(ev:any)=>{
+        if(ev){
+            setCategory(ev.currentTarget.value)
+        }
+    })
+    const button = document.createElement('button')
+    button.innerText = 'Atualizar produto'
+    const label = document.createElement('label')
+    label.innerText = 'Categoria do produto'
+    const firstOption = document.createElement('option')
+    firstOption.value = 'Selecione uma categoria'
+    firstOption.text = 'Selecione uma categoria'
+
+    selectInput.append(firstOption)
+
+    for(let i=0; i<categoryConversed.length;i++){
+        const options = document.createElement('option')
+        options.value = categoryConversed[i].title
+        options.text = categoryConversed[i].title
+
+    selectInput.append(options)
+    }
+
+    if(refForm.current){
+        refForm.current.append(label,selectInput,button)
+    }
+    
+    if(refTitle.current && refDescription.current && refPrice.current && productImgRef.current){
         refTitle.current.innerText = dbConversed[0].title
         refDescription.current.innerText = dbConversed[0].description
         refPrice.current.innerText = dbConversed[0].price
+        productImgRef.current.style.width = '300px'
+        productImgRef.current.style.height = '300px'
+        productImgRef.current.alt = 'Product Image'
+        productImgRef.current.src = dbConversed[0].photo
     }
     }
 
     getProductFromId()
-    })
+    },[])
 
     async function changeData(ev:FormEvent) {
         ev.preventDefault()
@@ -58,14 +92,16 @@ export default function Page({params}:any){
     }
 
 return(
-    <>
+    <LayoutAdminDashboard>
     <main className={style.main}>
     <div>
         <h1 ref={refTitle}></h1>
+        <img ref={productImgRef}/>
         <p ref={refDescription}></p>
         <span ref={refPrice}></span>
     </div>
-    <form onSubmit={(ev)=>changeData(ev)} className={style.form}>
+    <form onSubmit={(ev)=>changeData(ev)} className={style.form} ref={refForm}>
+        <h2>Atualizar produto</h2>
         <label htmlFor="">Titulo do produto</label>
         <input 
         type="text" 
@@ -81,21 +117,15 @@ return(
         value={description}
         onChange={(ev)=>setDescription(ev.currentTarget.value)}
         ></textarea>
-        <label htmlFor="">Categoria do produto</label>
-        <input 
-        type="text" 
-        value={category}
-        onChange={(ev)=>setCategory(ev.currentTarget.value)}
-        />
         <label htmlFor="">Preço do produto</label>
         <input 
         type="text" 
         value={price}
         onChange={(ev)=>setPrice(ev.currentTarget.value)}
         />
-        <button>Atualizar produto</button>
+        
     </form>
     </main>
-    </>
+    </LayoutAdminDashboard>
 )
 }

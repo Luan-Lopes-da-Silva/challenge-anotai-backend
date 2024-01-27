@@ -4,6 +4,7 @@ import { Owner } from "@/app/types/types"
 import { FormEvent, useState } from "react"
 import style from '@/app/styles/createCategory.module.scss'
 import LayoutAdminDashboard from "@/app/layouts/LayoutDashboard"
+import GetLocalStorage from "@/app/utils/getLocalStorage"
 
 export default function Page(){
     const [title,setTitle] = useState('')
@@ -11,11 +12,11 @@ export default function Page(){
 
     async function createCategory(ev:FormEvent) {
      ev.preventDefault()
-     const localUser:Owner = JSON.parse(localStorage.getItem('Usuario Logado'))
+     const localUser = GetLocalStorage()
      const createCategory = await fetch(`http://localhost:3333/category`,{
         method: "POST",
         body: JSON.stringify(
-          {title,description,ownerID:localUser.Ownerid}
+          {title,description,ownerID:localUser.ownerid}
         ),
         headers:{
           "Content-Type": "application/json"

@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import LayoutAdminDashboard from "../layouts/LayoutDashboard";
-import { Category, Owner, Product } from "../types/types";
+import { Category, Product } from "../types/types";
 import style from '@/app/styles/dashboardUser.module.scss'
+import GetLocalStorage from "../utils/getLocalStorage";
 
 
 export default function Page(){
@@ -12,13 +13,13 @@ export default function Page(){
 
     useEffect(()=>{
         async function printInfos() {
-        const localUser:Owner = JSON.parse(localStorage.getItem('Usuario Logado'))
+        const localUser = GetLocalStorage()
         const dbCategorys = await fetch('http://localhost:3333/categorys')
         const dbCategorysConversed:Category[] = await dbCategorys.json()
-        const filterCategorys = dbCategorysConversed.filter(categorys=>(categorys.ownerid === localUser.Ownerid))
+        const filterCategorys = dbCategorysConversed.filter(categorys=>(categorys.ownerid === localUser.ownerid))
         const dbProducts = await fetch('http://localhost:3333/products')
         const dbProductsConversed:Product[] = await dbProducts.json()
-        const filterProducts = dbProductsConversed.filter(products=>(products.ownerid === localUser.Ownerid))
+        const filterProducts = dbProductsConversed.filter(products=>(products.ownerid === localUser.ownerid))
 
         for (let i = 0; i<filterCategorys.length; i++){
             const filterQuantityOfProductS = filterProducts.filter(product=>(product.category === filterCategorys[i].title))
@@ -46,22 +47,24 @@ export default function Page(){
             const cardContainer  = document.createElement('div')
             cardContainer.id = filterProducts[i].id
 
-            const titleProduct = document.createElement('h3')
+            const titleProduct = document.createElement('p')
             titleProduct.innerText = filterProducts[i].title
 
-            const descriptionProduct = document.createElement('p')
-            descriptionProduct.innerText = filterProducts[i].description
-            
-            const categoryProduct = document.createElement('span')
-            categoryProduct.innerText = `Categoria do produto : ${filterProducts[i].category}`
+            const productImage = document.createElement('img')
+            productImage.style.width = '100%'
+            productImage.style.height = '200px'
+            productImage.alt = 'Product image'
+            productImage.src = filterProducts[i].photo
+
+      
 
             const priceSpan = document.createElement('span')
-            priceSpan.innerText = `Preço do produto ${filterProducts[i].price}`
+            priceSpan.innerText = `${filterProducts[i].price}`
 
             const button = document.createElement('button')
             button.innerHTML = `<a href ="dashboard/products/${filterProducts[i].id}">VER PRODUTO</a>` 
 
-            cardContainer.append(titleProduct,descriptionProduct,categoryProduct,priceSpan,button)
+            cardContainer.append(productImage,titleProduct,priceSpan,button)
 
             if(productsContainer.current){
                 productsContainer.current.append(cardContainer)
@@ -85,7 +88,7 @@ export default function Page(){
 
                 <div className={style.container}>
                 <h1>Produtos cadastrados</h1>
-                <div ref={productsContainer}>
+                <div ref={productsContainer} className={style.product}>
                 </div>
                 </div>
             </div>

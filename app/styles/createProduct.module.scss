@@ -6,10 +6,19 @@
     }
 
     form{
-        input,textarea{
+        input,textarea,label,select{
             display: block;
             margin-top:4px;
             margin-bottom: 12px;
+        }
+        input[type='file']{
+            display: none;
+        }
+
+        .photo{
+            background-color: #c3c3c3;
+            width: max-content;
+            padding: 4px 8px;
         }
     }
 }

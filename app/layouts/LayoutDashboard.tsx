@@ -1,5 +1,7 @@
 'use client'
 import { useEffect, useRef } from "react"
+import style from '@/app/styles/layoutUser.module.scss'
+import Link from "next/link"
 
 export default function LayoutAdminDashboard({
     children,
@@ -26,17 +28,19 @@ export default function LayoutAdminDashboard({
 
     return(
         <>
-        <header>
+        <header className={style.header}> 
             <nav>
                 <ul>
-                    <li>Criar Produto</li>
-                    <li>Criar Categoria</li>
+                    <Link href={'/dashboard'}>Home</Link>
+                    <Link href={'/dashboard/createproduct'}>Criar Produto</Link>
+                    <Link href={'/dashboard/createcategory'}>Criar Categoria</Link>
                 </ul>
-            </nav>
-            <div>
+
+                <div className={style.userInfos}>
                 <span ref={nameRef}></span>
                 <span ref={ownerId}></span>
             </div>
+            </nav>
         </header>
         <main>{children}</main>
         </>

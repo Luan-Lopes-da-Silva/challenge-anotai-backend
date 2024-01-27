@@ -1,0 +1,25 @@
+.main{
+    padding: 20px;
+    div{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+        
+        p{
+            width: 450px;
+            line-height: 1.5;
+        }
+    }
+    .form{
+        input,textarea{
+            display: block;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+
+        button{
+            margin-top: 12px;
+        }
+    }
+}

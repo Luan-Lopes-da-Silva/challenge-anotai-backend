@@ -67,6 +67,21 @@ export default function Page({params}:any){
     getProductFromId()
     },[])
 
+    async function deleteProduct() {
+        const deleteProduct = await fetch(`http://localhost:3333/product/${params.id}`,{
+           method: "DELETE",
+        }) 
+        
+        if(deleteProduct.status === 200){
+        alert('Produto deletado com sucesso')
+        setTimeout(() => {
+        window.location.href = '/dashboard'  
+        }, 2000);
+        }else{
+        alert('Erro no servidor')
+        }
+    }
+
     async function changeData(ev:FormEvent) {
         ev.preventDefault()
         
@@ -123,8 +138,8 @@ return(
         value={price}
         onChange={(ev)=>setPrice(ev.currentTarget.value)}
         />
-        
     </form>
+        <button onClick={deleteProduct}>Deletar produto</button>
     </main>
     </LayoutAdminDashboard>
 )

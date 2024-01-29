@@ -15,6 +15,7 @@ export type Product = {
     category : string
     ownerid : string
     photo: string
+    quantity : string
 }
 
 export type Category = {

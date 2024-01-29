@@ -11,6 +11,7 @@ export default function Page(){
     const [description,setDescription] = useState('')
     const [price,setPrice] = useState('')
     const [category,setCategory] = useState('')
+    const [quantity,setQuantity] = useState('')
     const refInput = useRef<HTMLInputElement>(null)
     const [url,setUrl] = useState('')
     const refForm = useRef<HTMLFormElement>(null)
@@ -90,7 +91,7 @@ export default function Page(){
                     const createProduct = await fetch(`http://localhost:3333/product`,{
                     method: "POST",
                     body: JSON.stringify(
-                    {title,description,price,category,ownerID:localUser.ownerid,photo:url}
+                    {title,description,price,category,ownerID:localUser.ownerid,photo:url,quantity}
                     ),
                     headers:{
                     "Content-Type": "application/json"
@@ -140,6 +141,12 @@ export default function Page(){
             type="text" 
             value={price}
             onChange={(ev)=>setPrice(ev.currentTarget.value)}
+            />
+            <label htmlFor="">Quantidade em estoque</label>
+            <input 
+            type="number" 
+            value={quantity}
+            onChange={(ev)=>{setQuantity(ev.currentTarget.value)}}
             />
         </form>
         </main>

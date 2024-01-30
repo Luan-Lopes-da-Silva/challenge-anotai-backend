@@ -1,0 +1,31 @@
+.main{
+    padding: 20px;
+
+    .form{
+        input,button,label{
+            display: block;
+        }
+    
+        input{
+            margin-top: 4px ;
+            margin-bottom: 12px ;
+        }
+    
+        input[type="file"]  {
+            display: none;
+        }
+    
+        button{
+            padding: 4px 24px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        
+        .label{
+            background-color: #c3c3c3;
+            cursor: pointer;
+            padding: 4px 34px;
+            width: max-content;
+        }
+    }
+}

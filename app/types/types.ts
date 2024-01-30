@@ -24,3 +24,10 @@ export type Category = {
     description : string
     ownerid : string
 }
+
+export type Customer = {
+    id: string
+    name: string
+    email: string
+    password : string
+}

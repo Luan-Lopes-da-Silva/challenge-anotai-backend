@@ -1,0 +1,55 @@
+.header{
+    nav{
+        padding: 40px 20px ;
+        background-color: red;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        ul{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            li{
+            list-style: none;
+            }
+
+            .search{ 
+               position: relative;
+               display: flex;
+               input{
+                padding: 4px 8px;
+                border-radius: 8px;
+                border: 2px solid black;
+                outline: none;
+                transition: .4s;
+
+                &:focus{
+                border-color: white;
+                }
+                }
+
+               img{
+                position: absolute;
+                right: 2px;
+                top: 5px;
+                cursor: pointer;
+               }
+            }
+
+            .cart{
+                position: relative;
+                
+
+                span{
+                    background-color: black;
+                    padding: 2px 4px;
+                    left: 12px;
+                    bottom: 12px;
+                    border-radius: 50%;
+                    position: absolute;
+                }
+            }
+        }
+    }
+}

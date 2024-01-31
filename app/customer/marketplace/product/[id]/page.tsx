@@ -1,8 +1,11 @@
 'use client'
-import { Product } from "@/app/types/types"
+import { NewProduct, Product } from "@/app/types/types"
 import Image from "next/image"
 import { FormEvent, useEffect,useRef, useState } from "react"
+import style from '@/app/styles/pageProduct.module.scss'
+import LayoutCustomer from "@/app/layouts/LayoutCostumer"
 
+type ArrayType = NewProduct[]
 export default function Page({params}:any){
     const refName = useRef<HTMLHeadingElement>(null)
     const refPhoto =useRef<HTMLImageElement>(null)
@@ -10,27 +13,29 @@ export default function Page({params}:any){
     const refDescription = useRef<HTMLParagraphElement>(null)
     const refQuantity =  useRef<HTMLSpanElement>(null)
     const [quantity,setQuantity] = useState(0)
+    const [myProducts,setMyProducts]= useState<ArrayType>([])
+
     useEffect(()=>{
     async function productInfos() {
         const dbProduct = await fetch(`http://localhost:3333/products/${params.id}`)
-        const conversedProduct:Product[] = await dbProduct.json()
-        
-        
-        if(refName.current && refPhoto.current && refDescription.current && refPrice.current && refQuantity.current){
+        const conversedProduct:Product[] = await dbProduct.json()    
+        if(refName.current && refPhoto.current && refPrice.current){
             refName.current.innerText = conversedProduct[0].title 
             refPhoto.current.style.width = '500px'
             refPhoto.current.style.height = '500px'
             refPhoto.current.alt = 'Product photo'
             refPhoto.current.src = conversedProduct[0].photo
-            refDescription.current.innerText = conversedProduct[0].description
             refPrice.current.innerText = conversedProduct[0].price
+        
             if(Number(conversedProduct[0].quantity) === 0){
-                refQuantity.current.innerText = `Produto Esgotado`
-            }else{
-                refQuantity.current.innerText = `Peças restantes : ${conversedProduct[0].quantity}`
-
+                if (refPrice.current) {
+                    refPrice.current.innerText = 'Produto Esgotado'
+                }
             }
+        
         }
+
+       
     }
     productInfos()
     },[])
@@ -38,32 +43,33 @@ export default function Page({params}:any){
     async function buyProduct(ev:FormEvent) {
     ev.preventDefault()
     const dbProduct = await fetch(`http://localhost:3333/products/${params.id}`)
-    const conversedProduct:Product[] = await dbProduct.json()
-    const account = Number(conversedProduct[0].quantity) - quantity
-    const updateQuantity = await fetch(`http://localhost:3333/quantity/${params.id}`,{
-        method: "PUT",
-        body: JSON.stringify({
-            quantity: `${account}`
-        }),
-        headers:{
-          "Content-Type": "application/json"
-        }
-      })
-      
-      if (updateQuantity.status === 200) {
-          alert('Produto comprado com sucesso')
-          setTimeout(() => {
-            location.reload()
-          }, 2000);
-      } else {
-          alert('Erro no servidor')
-      }
+    const conversedProduct:Product[] = await dbProduct.json() 
+    }
+
+    async function addInCart(){
+    const dbProduct = await fetch(`http://localhost:3333/products/${params.id}`)
+    const conversedProduct:Product[] = await dbProduct.json() 
+    
+    const newItem:NewProduct = {
+    photo: conversedProduct[0].photo,
+    price : conversedProduct[0].price,
+    quantity : `${quantity}`,
+    title : conversedProduct[0].title
+    } 
+    
+    const adicionarItem = () => {
+        setMyProducts((prevArray) => [...prevArray, newItem]);
+    };
+
+    adicionarItem()
+
+    localStorage.setItem('cart-items',JSON.stringify(myProducts))
     }
     return(
+        <LayoutCustomer>
         <main>
-        <section>
+        <section className={style.product}>
             <article>
-                <h1 ref={refName}></h1>
                 <Image
                 alt="Product Photo"
                 src={''}
@@ -71,23 +77,28 @@ export default function Page({params}:any){
                 width={500}
                 height={500}
                 />
-                <p ref={refDescription}></p>
+                
             </article>
-            <article>
+            <article className={style.secondColumn}>
+                <h1 ref={refName}></h1>
                 <span ref={refPrice} style={{display:'block'}}></span>
-                <span ref={refQuantity} style={{display:'block'}}></span>
                 <form onSubmit={(ev)=>buyProduct(ev)}>
+                <label htmlFor="">Quantidade</label>
                 <input 
                 type="number" 
                 value={quantity}
                 onChange={(ev)=>setQuantity(Number(ev.currentTarget.value))}
                 />
+                <div className={style.buttons}>
                 <button>Comprar</button>
+                <button onClick={addInCart}>Adicionar no carrinho</button>
+                </div>
                 </form>
              
               
             </article>
         </section>
         </main>
+        </LayoutCustomer>
     )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import LayoutCustomer from "@/app/layouts/LayoutCostumer"
 import { Product } from "@/app/types/types"
 import { useEffect, useRef } from "react"
 
@@ -38,8 +39,8 @@ export default function Market(){
         renderProducts()
     })
     return(
-        <>
+        <LayoutCustomer>
         <div ref={productsContainer}></div>
-        </>
+        </LayoutCustomer>
     )
 }

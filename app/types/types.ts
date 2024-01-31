@@ -31,3 +31,10 @@ export type Customer = {
     email: string
     password : string
 }
+
+export type NewProduct = {
+    title : string
+    price : string
+    photo: string
+    quantity : string
+}

@@ -3,6 +3,8 @@
 import LayoutCustomer from "@/app/layouts/LayoutCostumer";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import style from '@/app/styles/finalForms.module.scss'
+import { GetCartItems } from "@/app/utils/getLocalStorage";
+import { Product } from "@/app/types/types";
 
 export default function Page(){
     const refFirstForm = useRef<HTMLFormElement>(null)
@@ -53,10 +55,37 @@ export default function Page(){
         
     }
 
-    function finishOrder(ev:FormEvent){
+    async function finishOrder(ev:FormEvent){
         ev.preventDefault()
        if(numberCard!='' && flagCard!='' && terms!=''){
-        alert('Pedido feito com sucesso')
+       const cartItems = GetCartItems()
+       for(let i = 0; i<cartItems.length; i++){
+        const callApi = await fetch(`http://localhost:3333/products/${cartItems[i].id}`)
+        const apiConversed:Product[] = await callApi.json() 
+        if(cartItems[i].id === cartItems[i].id){
+        const wishedProperty = 'quantity'
+        const quantitys = cartItems.map(cartItem=>cartItem[wishedProperty])
+        const result = quantitys.reduce((acc,cur)=>{
+            return Number(acc) + Number(cur)
+        },0)
+    
+        const account = Number(apiConversed[i].quantity) - result
+        
+      const changeQuantity = await fetch(`http://localhost:3333/quantity/${cartItems[i].id}`,{
+          method: "PUT",
+          body: JSON.stringify(
+            {
+              quantity:`${account}`
+            }
+          ),
+          headers:{
+            "Content-Type": "application/json"
+          }
+        })
+
+    localStorage.removeItem('cart-items')
+        }
+       }
        }else{
         alert('Preencha todos os campos') 
        }

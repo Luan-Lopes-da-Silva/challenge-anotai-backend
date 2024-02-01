@@ -1,4 +1,4 @@
-import { Owner ,NewProduct} from "../types/types"
+import { Owner ,NewProduct, Customer} from "../types/types"
 
 export default function GetLocalStorage(){
     const localStorageUser = localStorage.getItem('Usuario Logado')
@@ -17,6 +17,24 @@ export default function GetLocalStorage(){
     }
     return userUndefined
     }
+}
+
+export function GetCustomer(){
+    const localStorageUser = localStorage.getItem('Usuario Logado')
+
+    if(localStorageUser){
+    const parseLocal:Customer = JSON.parse(localStorageUser) 
+    return parseLocal
+    }else{
+    const userUndefined:Customer = {
+    email: '',
+    id : '',
+    name : '',
+    password: '',
+    avatar: ''
+    }
+    return userUndefined
+    } 
 }
 
 

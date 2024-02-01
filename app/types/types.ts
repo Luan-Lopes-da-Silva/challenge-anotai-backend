@@ -30,6 +30,7 @@ export type Customer = {
     name: string
     email: string
     password : string
+    avatar : string
 }
 
 export type NewProduct = {
@@ -37,4 +38,5 @@ export type NewProduct = {
     price : string
     photo: string
     quantity : string
+    id: string
 }

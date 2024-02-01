@@ -13,10 +13,9 @@ export default function Login(){
        const conversedDb:Customer[] = await getCustomerDb.json()
        const filterEmail = conversedDb.filter(customer=>(customer.email === email))
        const filterCustomer = filterEmail.filter(customer=>(customer.password === password))
-       console.log(filterCustomer.length)
     
        if(filterCustomer.length>0){
-        alert('Usuario encontrado')
+        localStorage.setItem('Usuario Logado',JSON.stringify(filterCustomer[0]))
         setTimeout(() => {
             window.location.href = '/customer/marketplace'
         }, 2000);

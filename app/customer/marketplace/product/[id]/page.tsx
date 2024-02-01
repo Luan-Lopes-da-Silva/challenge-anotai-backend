@@ -54,7 +54,8 @@ export default function Page({params}:any){
     photo: conversedProduct[0].photo,
     price : conversedProduct[0].price,
     quantity : `${quantity}`,
-    title : conversedProduct[0].title
+    title : conversedProduct[0].title,
+    id: conversedProduct[0].id
     } 
     
     const adicionarItem = () => {
@@ -65,6 +66,7 @@ export default function Page({params}:any){
 
     localStorage.setItem('cart-items',JSON.stringify(myProducts))
     }
+    
     return(
         <LayoutCustomer>
         <main>

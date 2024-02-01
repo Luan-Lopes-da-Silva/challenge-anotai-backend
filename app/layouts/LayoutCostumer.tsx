@@ -21,9 +21,8 @@ export default function LayoutCustomer({
     const refAvatar = useRef<HTMLDivElement>(null)
     const refHideMenu = useRef<HTMLDivElement>(null)
     const [search,setSearch] = useState('')
-    const [searchProduct,setSearchProduct] = useState<Product[] | undefined>([])
-    const testRef = useRef<HTMLDivElement>(null)
-
+    const [searchProduct, setSearchProduct] = useState<Product[]>([]);
+  
     useEffect(()=>{
         function insertInfos(){
         const getLocalUser = GetCustomer()

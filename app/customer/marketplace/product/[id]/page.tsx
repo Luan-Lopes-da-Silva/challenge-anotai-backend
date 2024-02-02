@@ -4,6 +4,7 @@ import Image from "next/image"
 import { FormEvent, useEffect,useRef, useState } from "react"
 import style from '@/app/styles/pageProduct.module.scss'
 import LayoutCustomer from "@/app/layouts/LayoutCostumer"
+import { GetCartItems } from "@/app/utils/getLocalStorage"
 
 type ArrayType = NewProduct[]
 export default function Page({params}:any){
@@ -49,7 +50,9 @@ export default function Page({params}:any){
     async function addInCart(){
     const dbProduct = await fetch(`http://localhost:3333/products/${params.id}`)
     const conversedProduct:Product[] = await dbProduct.json() 
-    
+    const newArray = []
+
+
     const newItem:NewProduct = {
     photo: conversedProduct[0].photo,
     price : conversedProduct[0].price,
@@ -58,13 +61,47 @@ export default function Page({params}:any){
     id: conversedProduct[0].id
     } 
     
-    const adicionarItem = () => {
-        setMyProducts((prevArray) => [...prevArray, newItem]);
-    };
+    const cartItemsLocal = GetCartItems()
 
-    adicionarItem()
+    
+    
+    const sameItem = cartItemsLocal.filter(carItem=>(carItem.id === newItem.id))
 
-    localStorage.setItem('cart-items',JSON.stringify(myProducts))
+    
+    if(sameItem.length>0){
+        const sameItemQuantity:NewProduct = {
+            id:sameItem[0].id,
+            photo: sameItem[0].photo,
+            price: sameItem[0].price,
+            title: sameItem[0].title,
+            quantity : `${Number(sameItem[0].quantity) + quantity}`
+        }
+
+        const sameItemIndex = cartItemsLocal.findIndex(function(element){
+            return element.id === newItem.id
+        })
+    
+        cartItemsLocal.splice(sameItemIndex,1)
+    
+        cartItemsLocal.push(sameItemQuantity)
+
+        for(let i=0; i<cartItemsLocal.length;i++){
+            newArray.push(cartItemsLocal[i])
+            localStorage.setItem('cart-items',JSON.stringify(newArray))
+        }
+
+        }else if(cartItemsLocal.length>0){
+            for(let i=0; i<cartItemsLocal.length;i++){
+                newArray.push(cartItemsLocal[i])
+            }
+                newArray.push(newItem)
+                localStorage.setItem('cart-items',JSON.stringify(newArray))
+        }else{
+            newArray.push(newItem)
+            localStorage.setItem('cart-items',JSON.stringify(newArray))
+        }
+
+        window.location.reload()
     }
     
     return(

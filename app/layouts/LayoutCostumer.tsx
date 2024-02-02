@@ -116,7 +116,8 @@ export default function LayoutCustomer({
                         height={22}
                         alt="cart svg"
                         />
-                        <span ref={countRef}></span>
+                        <span ref={countRef}>
+                        </span>
                         </Link>
                     </div>
                     <div className={style.avatar} ref={refAvatar}>

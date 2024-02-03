@@ -4,19 +4,84 @@ import Image from "next/image"
 import { FormEvent, useEffect,useRef, useState } from "react"
 import style from '@/app/styles/pageProduct.module.scss'
 import LayoutCustomer from "@/app/layouts/LayoutCostumer"
-import { GetCartItems } from "@/app/utils/getLocalStorage"
+import { GetCartItems, GetCustomer } from "@/app/utils/getLocalStorage"
+import {Toaster, toast} from 'react-hot-toast'
+import CountCartItem from "@/app/utils/countCart"
+import Link from "next/link"
+import cartImg from '@/public/shopping_bag_FILL0_wght400_GRAD0_opsz24.svg'
+import menuSvg from '@/public/more_vert_FILL0_wght400_GRAD0_opsz24.svg'
 
-type ArrayType = NewProduct[]
+
 export default function Page({params}:any){
     const refName = useRef<HTMLHeadingElement>(null)
     const refPhoto =useRef<HTMLImageElement>(null)
     const refPrice = useRef<HTMLSpanElement>(null)
-    const refDescription = useRef<HTMLParagraphElement>(null)
-    const refQuantity =  useRef<HTMLSpanElement>(null)
     const [quantity,setQuantity] = useState(0)
-    const [myProducts,setMyProducts]= useState<ArrayType>([])
+    const refCount = useRef<HTMLSpanElement>(null)
+    const refAvatar = useRef<HTMLDivElement>(null)
+    const refHideMenu = useRef<HTMLDivElement>(null)
+
+    let count = 1
+    function expandMenu(){
+        count++
+        if(count%2 === 0){
+            if(refHideMenu.current && refAvatar.current){
+            refHideMenu.current.style.display = 'block'
+            refAvatar.current.style.backgroundColor = 'white'
+            }
+        }else{
+            if(refHideMenu.current && refAvatar.current){
+                refHideMenu.current.style.display = 'none'
+                refAvatar.current.style.backgroundColor = 'transparent'
+            }
+        }
+        }
+    
+        function Logout(){
+            localStorage.removeItem('Usuario Logado')
+            setTimeout(() => {
+                window.location.href = 'login'
+            }, 2000);
+        }
+    
 
     useEffect(()=>{
+
+        function countItems(){
+            const getItemsCart = CountCartItem()
+
+            if(!localStorage.getItem('cart-items')){
+                if(refCount.current){
+                    refCount.current.innerText = `0`
+                    }
+            }
+            if(refCount.current){
+            refCount.current.innerText = `${getItemsCart}`
+            }
+        }
+
+        function insertInfos(){
+            const getLocalUser = GetCustomer()
+                if(getLocalUser && refAvatar.current){
+                    const imgAvatar = document.createElement('img')
+                    imgAvatar.style.width = '60px'
+                    imgAvatar.style.height = '60px'
+                    imgAvatar.alt = 'Avatar photo'
+                    imgAvatar.src = getLocalUser.avatar
+                    imgAvatar.style.borderRadius = '50%'
+                    imgAvatar.style.objectFit = 'cover'
+    
+                    const imgMenu = document.createElement('img')
+                    imgMenu.style.width = '40px'
+                    imgMenu.style.height = '40px'
+                    imgMenu.alt = 'Menu svg'
+                    imgMenu.src = menuSvg.src
+                    imgMenu.style.cursor = 'pointer'
+                    imgMenu.addEventListener('click',expandMenu)
+                    refAvatar.current.append(imgAvatar,imgMenu)
+                }    
+            }
+
     async function productInfos() {
         const dbProduct = await fetch(`http://localhost:3333/products/${params.id}`)
         const conversedProduct:Product[] = await dbProduct.json()    
@@ -34,11 +99,12 @@ export default function Page({params}:any){
                 }
             }
         
-        }
-
-       
+        }       
     }
+
+    insertInfos()
     productInfos()
+    countItems()
     },[])
 
     async function buyProduct(ev:FormEvent) {
@@ -62,10 +128,8 @@ export default function Page({params}:any){
     } 
     
     const cartItemsLocal = GetCartItems()
-
-    
-    
     const sameItem = cartItemsLocal.filter(carItem=>(carItem.id === newItem.id))
+    
 
     
     if(sameItem.length>0){
@@ -90,22 +154,64 @@ export default function Page({params}:any){
             localStorage.setItem('cart-items',JSON.stringify(newArray))
         }
 
+       
         }else if(cartItemsLocal.length>0){
             for(let i=0; i<cartItemsLocal.length;i++){
                 newArray.push(cartItemsLocal[i])
             }
                 newArray.push(newItem)
                 localStorage.setItem('cart-items',JSON.stringify(newArray))
+               
         }else{
             newArray.push(newItem)
             localStorage.setItem('cart-items',JSON.stringify(newArray))
         }
 
-        window.location.reload()
-    }
+        const getCart = CountCartItem()
+        if(refCount.current){
+            refCount.current.innerText = `${getCart}`
+        }
+
+        toast.success('Item adicionado ao carrinho com sucesso')
+
+        }
     
     return(
-        <LayoutCustomer>
+        <>
+        <Toaster position="bottom-right"/>
+        <header className={style.header}>
+            <nav>
+                <h1>LOGO</h1>
+                <ul>
+                    <li>HOME</li>
+                    <li>PRODUCTS</li>
+                    <li>ABOUT US</li>
+                </ul>
+                <ul className={style.others}>
+                    <div className={style.cart}>
+                        <Link href={'/customer/marketplace/cartPage'}>
+                        <Image
+                        src={cartImg}
+                        width={22}
+                        height={22}
+                        alt="cart svg"
+                        />
+                        <span ref={refCount}>
+                        </span>
+                        </Link>
+                    </div>
+                    <div className={style.avatar} ref={refAvatar}>
+                    </div>
+
+                   <div className={style.hide} ref={refHideMenu}>
+                        <ul>
+                            <li>MEU PERFIL</li>
+                            <li onClick={Logout}>LOGOUT</li>
+                        </ul>
+                    </div>
+                </ul>
+            </nav>
+        </header>  
         <main>
         <section className={style.product}>
             <article>
@@ -138,6 +244,7 @@ export default function Page({params}:any){
             </article>
         </section>
         </main>
-        </LayoutCustomer>
+        </>
     )
 }
+

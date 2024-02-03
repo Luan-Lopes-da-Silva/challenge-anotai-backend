@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import {useEffect, useRef, useState } from "react"
 import cartImg from '@/public/shopping_bag_FILL0_wght400_GRAD0_opsz24.svg'
 import searchImg from '@/public/search_FILL0_wght400_GRAD0_opsz24.svg'
 import style from '@/app/styles/customerDashboard.module.scss'
@@ -10,18 +10,22 @@ import menuSvg from '@/public/more_vert_FILL0_wght400_GRAD0_opsz24.svg'
 import { Product } from "../types/types"
 import { SearchResults } from "../components/SearchResults"
 import SearchBar from "../components/SearchInput"
+import { Toaster } from "react-hot-toast"
+import CountCartItem from "../utils/countCart"
+
+
 
 export default function LayoutCustomer({
     children,
   }: {
     children: React.ReactNode
   }) {
-
-    const countRef = useRef<HTMLSpanElement>(null)
+    const refCount = useRef<HTMLSpanElement>(null)
     const refAvatar = useRef<HTMLDivElement>(null)
     const refHideMenu = useRef<HTMLDivElement>(null)
     const [search,setSearch] = useState('')
     const [searchProduct, setSearchProduct] = useState<Product[]>([]);
+   
   
     useEffect(()=>{
         function insertInfos(){
@@ -46,15 +50,15 @@ export default function LayoutCustomer({
             }    
         }
 
-        function insterInCart(){
-            if(countRef.current){
-                const localCart = GetCartItems()
-                countRef.current.innerText = `${localCart.length}`
-            }
+        function countItems(){
+        const getItemsCart = CountCartItem()
+        if(refCount.current){
+        refCount.current.innerText = `${getItemsCart}`
         }
-
-        insertInfos()
-        insterInCart()
+        }
+       
+       countItems()
+       insertInfos() 
     },[])
     
     let count = 1
@@ -116,14 +120,15 @@ export default function LayoutCustomer({
                         height={22}
                         alt="cart svg"
                         />
-                        <span ref={countRef}>
+                        <span ref={refCount}>
+                            
                         </span>
                         </Link>
                     </div>
                     <div className={style.avatar} ref={refAvatar}>
                     </div>
 
-                    <div className={style.hide} ref={refHideMenu}>
+                   <div className={style.hide} ref={refHideMenu}>
                         <ul>
                             <li>MEU PERFIL</li>
                             <li onClick={Logout}>LOGOUT</li>
@@ -137,8 +142,12 @@ export default function LayoutCustomer({
         (
             <SearchResults searchProduct={searchProduct}/>
         ):(
-        <main>{children}</main>
+        
+        <main>
+            <Toaster position="bottom-right"/>
+            {children}
+        </main>
         )}
-        </>
+        </>  
     )
   }

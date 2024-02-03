@@ -1,3 +1,93 @@
+.header{
+    nav{
+        background-color: red;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h1{
+            margin-left: 20px;
+        }
+        ul{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            li{
+            list-style: none;
+            }
+        }
+
+        .others{
+            position: relative;
+            .search{ 
+                position: relative;
+                display: flex;
+                input{
+                 padding: 4px 8px;
+                 border-radius: 8px;
+                 border: 2px solid black;
+                 outline: none;
+                 transition: .4s;
+ 
+                 &:focus{
+                 border-color: white;
+                 }
+                 }
+ 
+                img{
+                 position: absolute;
+                 right: 2px;
+                 top: 5px;
+                 cursor: pointer;
+                }
+             }
+ 
+             .avatar{
+                 display: flex;
+                 align-items: center;
+                 gap: 20px;
+                 height: 100px;
+                 padding: 20px;
+                 position: relative;
+             }
+
+             .hide{
+                position: absolute;
+                position: absolute;
+                right: 0%;
+                top: 100%;
+                display: none;
+                
+                ul{
+                    display: block;
+                    background-color: white;
+                    color: black;
+                    text-align: center;
+                    width: 160px;
+                    height: 60px;
+                    padding: 12px;
+
+                    li{
+                        cursor: pointer;
+                    }
+                }
+             }
+ 
+             .cart{
+                 position: relative;
+                 span{
+                     background-color: black;
+                     padding: 2px 4px;
+                     left: 12px;
+                     bottom: 12px;
+                     border-radius: 50%;
+                     position: absolute;
+                 }
+             }
+        }
+    }
+}
+
+
 .product{
 display: grid;
 grid-template-columns: 500px 1fr;

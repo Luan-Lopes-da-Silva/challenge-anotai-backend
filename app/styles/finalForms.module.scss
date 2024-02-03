@@ -10,6 +10,22 @@
     gap: 20px;
 
     form{
+
+        img{
+            margin-bottom: 12px;
+        }
+        .headerTable{
+            display: flex;
+            gap: 12px;
+            span{
+                background-color: black;
+                color: white;
+                cursor: pointer;
+                padding: 4px 12px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+            }
+        }
         background-color: white;
         padding: 20px;
         color: black;

@@ -87,7 +87,7 @@ export default function LayoutCustomer({
         if(searchTerm!==''){
         const getDb = await fetch('http://localhost:3333/products')
         const convertDb:Product[] = await getDb.json()
-        const searchProductInDb = convertDb.filter(product=>(product.title.startsWith(search)))
+        const searchProductInDb = convertDb.filter(product=>(product.title.includes(search)))
         setSearchProduct(searchProductInDb)
         setSearch(searchTerm)
        }

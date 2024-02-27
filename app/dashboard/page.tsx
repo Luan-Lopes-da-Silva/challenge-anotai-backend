@@ -52,15 +52,16 @@ export default function Page(){
                     }
                     
                     for(let i=0; i<filterProducts.length; i++){
-                        const cardContainer  = document.createElement('div')
+                        const cardContainer  = document.createElement('article')
                         cardContainer.id = filterProducts[i].id
             
                         const titleProduct = document.createElement('p')
                         titleProduct.innerText = filterProducts[i].title
             
                         const productImage = document.createElement('img')
-                        productImage.style.width = '100%'
+                        productImage.style.width = '200px'
                         productImage.style.height = '200px'
+                        productImage.style.objectFit = 'cover'
                         productImage.alt = 'Product image'
                         productImage.src = filterProducts[i].photo
             
@@ -72,7 +73,7 @@ export default function Page(){
                         const button = document.createElement('button')
                         button.innerHTML = `<a href ="dashboard/products/${filterProducts[i].id}">VER PRODUTO</a>` 
             
-                        cardContainer.append(productImage,titleProduct,priceSpan,button)
+                        cardContainer.append(titleProduct,productImage,priceSpan,button)
             
                         if(productsContainer.current){
                             productsContainer.current.append(cardContainer)

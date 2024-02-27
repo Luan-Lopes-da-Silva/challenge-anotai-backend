@@ -1,25 +1,61 @@
+$li-titles-borders : #000000;
+$bg-header-boxs:#8ECAE6;
+$input-header:#7B7979;
+$white:#FFFFFF;
+$inputs-alt-titles:#494949;
+$borders:#3E7994;
+$texts:#626161;
+
+
+@font-face {
+    font-family: 'Roboto-B';
+    src: url('../../public/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway-R';
+    src: url('../../public/Raleway-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway-M';
+    src: url('../../public/Raleway-Medium.ttf');
+}
+
 .main{
     padding: 20px;
+    background-color: $white;
 
     .cards{
         display: flex;
-        gap: 20px;
+        gap: 80px;
 
 
         div{
+            margin-bottom: 20px;
             h1{
                 margin-bottom: 8px;
+                font-size: 2.5rem;
+                font-family: 'Roboto-B';
             }
             display: flex;
             flex-direction: column;
             gap: 8px;
 
             h3{
-                color: yellow;
+                color: $inputs-alt-titles;
+                font-family: 'Roboto-B';
             }
             p{
                 width: 350px;
                 line-height: 1.5;
+                color: $texts;
+                font-family: 'Raleway-M';
+            }
+
+            span{
+                color: $texts;
+                font-family: 'Raleway-R';
             }
 
             button{
@@ -28,8 +64,9 @@
         }
 
         .product{
+            
             width: max-content;
-
+            padding: 12px;
             img{
                 border-radius: 12px;
             }
@@ -47,6 +84,60 @@
 
             button{
                 width: max-content;
+            }
+
+            article{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background-color: $borders;
+                padding: 20px;
+                border: 2px solid $li-titles-borders;
+                border-radius: 20px;
+                
+                img{
+                margin: auto auto;
+                }
+
+               p,span{
+                text-align: center;
+                margin-top: 8px;
+               }
+
+               p{
+                margin-bottom: 8px;
+                color: $white;
+                font-family: 'Roboto-B';
+               }
+
+               span{
+                font-family: 'Raleway-M';
+                color: $li-titles-borders;
+               }
+
+               button{
+                margin: auto auto;
+                margin-top: 12px;
+                text-transform: uppercase;
+                background-color: $inputs-alt-titles;
+                transition: .4s;
+                padding: 12px 24px;
+                border: 2px solid $li-titles-borders;
+                border-radius: 8px;
+                a{
+                    color: $white;
+                    text-decoration: none;
+                    font-family: 'OpenSans-R';
+                }
+
+                &:hover{
+                    cursor: pointer;
+                    background-color: $input-header;
+                    a{
+                    font-family: 'OpenSans-M';
+                    }
+                }
+               }
             }
         }
     }

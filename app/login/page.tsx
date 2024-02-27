@@ -3,6 +3,9 @@
 import { FormEvent } from "react"
 import { Owner } from "../types/types"
 import { useState } from "react"
+import style from '@/app/styles/login.module.scss'
+import Image from "next/image"
+import bg from '@/public/Rectangle 16.png'
 
 export default function Page(){
     const [email,setEmail] = useState('')
@@ -24,6 +27,13 @@ export default function Page(){
     }
     return(
         <>
+        <div className={style.main}>
+        <Image
+        width={800}
+        height={800}
+        src={bg}
+        alt="bg"
+        />
         <form onSubmit={(ev)=>login(ev)}>
             <label htmlFor="">Email</label>
             <input 
@@ -39,6 +49,7 @@ export default function Page(){
             />
             <button>Login</button>
         </form>
+        </div>
         </>
     )
 }

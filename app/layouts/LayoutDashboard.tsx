@@ -49,7 +49,7 @@ export default function LayoutAdminDashboard({
     count++
     if(count%2==0){
         if(openTogle.current && hideMenu.current){
-            openTogle.current.style.backgroundColor = 'white'
+            openTogle.current.style.backgroundColor = '#3E7994'
             hideMenu.current.style.display = 'flex'
         }
     }else{

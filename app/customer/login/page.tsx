@@ -2,6 +2,9 @@
 
 import { Customer } from "@/app/types/types"
 import { FormEvent, useState } from "react"
+import style from '@/app/styles/login.module.scss'
+import Image from "next/image"
+import bg from '@/public/Rectangle 16.png'
 
 export default function Login(){
     const [email,setEmail] = useState('')
@@ -24,6 +27,13 @@ export default function Login(){
        }
     }
     return(
+        <div className={style.main}>
+        <Image
+        width={800}
+        height={800}
+        alt="bg"
+        src={bg}
+        />
         <form onSubmit={(ev)=>loginCustomer(ev)}>
             <label htmlFor="">Email</label>
             <input 
@@ -39,5 +49,7 @@ export default function Login(){
             />
             <button>LOGAR</button>
         </form>
+        </div>
+      
     )
 }

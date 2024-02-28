@@ -68,7 +68,7 @@ export default function LayoutCustomer({
     if(count%2 === 0){
         if(refHideMenu.current && refAvatar.current){
         refHideMenu.current.style.display = 'block'
-        refAvatar.current.style.backgroundColor = 'white'
+        refAvatar.current.style.backgroundColor = '#3E7994'
         }
     }else{
         if(refHideMenu.current && refAvatar.current){

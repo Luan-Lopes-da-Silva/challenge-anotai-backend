@@ -1,16 +1,44 @@
-.main{
-    padding: 20px;
-    h1{
-        font-size: 2.5rem;
-        margin-bottom: 12px;
-    }
+$li-titles-borders : #000000;
+$bg-header-boxs:#8ECAE6;
+$input-header:#7B7979;
+$white:#FFFFFF;
+$inputs-alt-titles:#494949;
+$borders:#3E7994;
+$texts:#626161;
 
+@font-face {
+    font-family: 'Roboto-B';
+    src: url('../../public/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans-R';
+    src: url('../../public/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans-M';
+    src: url('../../public/OpenSans-Medium.ttf');
+}
+
+
+.main{
+    background-color: $white;
+    min-height: 100vh;
+    padding: 40px;
+
+    h1{
+    margin-bottom: 12px;
+    font-family: 'Roboto-B';
+    color: $inputs-alt-titles;
+    font-size: 2.5rem;
+    }
     form{
-        input,textarea,label,select{
+      
+        input,label{
             display: block;
-            margin-top:4px;
-            margin-bottom: 12px;
         }
+
         input[type='file']{
             display: none;
         }
@@ -19,6 +47,54 @@
             background-color: #c3c3c3;
             width: max-content;
             padding: 4px 8px;
+            cursor: pointer;
+            margin: 20px 0px;
+         }
+
+        label{
+            font-family: 'OpenSans-M';
+            font-size: 1.5rem;
+            color: $texts;
+        }
+
+        input,textarea{
+            margin-top: 4px;
+            margin-bottom: 20px;
+            padding: 8px 4px;
+            width: 400px;
+            background-color: $input-header;
+            border: 2px solid $li-titles-borders;
+            border-radius: 4px;
+        }
+
+        select{
+            margin-top: 4px;
+            margin-bottom: 20px;
+            padding: 8px 4px;
+            width: 300px;
+            background-color: $input-header;
+            border: 2px solid $li-titles-borders;
+            border-radius: 4px;
+        }
+
+        button{
+        display: block;
+        background-color: $inputs-alt-titles;
+        padding: 12px 24px;
+        text-transform: uppercase;
+        color: $white;
+        font-family: 'OpenSans-R';
+        transition: .4s;
+        cursor: pointer;
+        border: 2px solid $li-titles-borders;
+        border-radius: 8px;
+        width: max-content;
+        margin-top: 30px;
+        font-size: 1.1rem;
+        &:hover{
+            background-color: $input-header;
+            font-family: 'OpenSans-M';
+        }
         }
     }
 }

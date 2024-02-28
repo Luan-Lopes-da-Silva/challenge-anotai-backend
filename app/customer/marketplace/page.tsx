@@ -3,7 +3,6 @@
 import { Product } from "@/app/types/types"
 import { useEffect, useRef,useState } from "react"
 import style from '@/app/styles/marketplace.module.scss'
-import SearchBar from "@/app/components/SearchInput"
 import Link from "next/link"
 import { GetCartItems, GetCustomer } from "@/app/utils/getLocalStorage"
 import cartImg from '@/public/shopping_bag_FILL0_wght400_GRAD0_opsz24.svg'
@@ -56,7 +55,11 @@ export default function Market(){
                  const photoProduct = document.createElement('img')
                  photoProduct.style.width = '100px'
                  photoProduct.style.height = '100px'
+                 photoProduct.style.objectFit = 'cover'
+                 photoProduct.style.border = '2px solid #8ECAE6'
+                 photoProduct.style.borderRadius = '8px'
                  photoProduct.alt = 'Product photo'
+                 photoProduct.src = dbConversed[i].photo
                  photoProduct.src = dbConversed[i].photo
         
                  const priceProduct = document.createElement('p')
@@ -97,7 +100,11 @@ export default function Market(){
          const photoProduct = document.createElement('img')
          photoProduct.style.width = '100px'
          photoProduct.style.height = '100px'
+         photoProduct.style.objectFit = 'cover'
+         photoProduct.style.border = '2px solid #8ECAE6'
+         photoProduct.style.borderRadius = '8px'
          photoProduct.alt = 'Product photo'
+         photoProduct.src = dbConversed[i].photo
          photoProduct.src = dbConversed[i].photo
 
          const priceProduct = document.createElement('p')
@@ -113,7 +120,7 @@ export default function Market(){
          }
         }
      }
-
+   
     let count = 1
     
     function expandMenu(){
@@ -121,7 +128,7 @@ export default function Market(){
     if(count%2 === 0){
         if(refHideMenu.current && refAvatar.current){
         refHideMenu.current.style.display = 'block'
-        refAvatar.current.style.backgroundColor = 'white'
+        refAvatar.current.style.backgroundColor = '#3E7994'
         }
     }else{
         if(refHideMenu.current && refAvatar.current){
@@ -150,8 +157,6 @@ export default function Market(){
         }else{
             renderProducts()
         }
-    
-    
     }
     
     return(
@@ -200,7 +205,9 @@ export default function Market(){
         {test!==''?(
             <SearchResults searchProduct={searchProduct}/>
         ):(
-           <div ref={productsContainer}></div> 
+           <main  className={style.main}>
+            <div ref={productsContainer}></div>
+           </main> 
         )}
         </div>
     )

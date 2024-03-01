@@ -205,7 +205,7 @@ export default function Page(){
                 )} 
 
                 {tab==='PIX'?(
-                <div>
+                <div className={style.pix}>
                     <p>O seu QR CODE tem duração de até 30 minutos depois desse tempo você tera que gerar um novo pedido.</p>
                     <Image
                     alt="qr-code img"
@@ -214,7 +214,8 @@ export default function Page(){
                     src={pixSvg}
                     onClick={(ev)=>setPix(ev.currentTarget.src)}
                     />
-                       <p>Codigo pix: ed5c04515aa9e3a87d54dc2fbd76da339f0ba0dc5f54deb97212
+                       <p>Codigo pix</p>
+                       <p>ed5c04515aa9e3a87d54dc2fbd76da339f0ba0dc5f54deb97212
                        ceea0f2ecab35a8270f9a89a16f1b0fbb76aa74c4d6008f54d67
                        1ce2cf6eee74de9d012f0bd6da5f5fa7fc18e478b9396e59e7db
                        280dbacc2b66beb978c6dc97941f324bea0c44192b2b421fdc9e

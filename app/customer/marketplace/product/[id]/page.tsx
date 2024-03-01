@@ -10,7 +10,7 @@ import CountCartItem from "@/app/utils/countCart"
 import Link from "next/link"
 import cartImg from '@/public/shopping_bag_FILL0_wght400_GRAD0_opsz24.svg'
 import menuSvg from '@/public/more_vert_FILL0_wght400_GRAD0_opsz24.svg'
-
+import './globals.css'
 
 export default function Page({params}:any){
     const refName = useRef<HTMLHeadingElement>(null)
@@ -87,8 +87,9 @@ export default function Page({params}:any){
         const conversedProduct:Product[] = await dbProduct.json()    
         if(refName.current && refPhoto.current && refPrice.current){
             refName.current.innerText = conversedProduct[0].title 
-            refPhoto.current.style.width = '500px'
+            refPhoto.current.style.width = '700px'
             refPhoto.current.style.height = '500px'
+            refPhoto.current.style.objectFit = 'cover'
             refPhoto.current.alt = 'Product photo'
             refPhoto.current.src = conversedProduct[0].photo
             refPrice.current.innerText = conversedProduct[0].price
@@ -212,7 +213,7 @@ export default function Page({params}:any){
                 </ul>
             </nav>
         </header>  
-        <main>
+        <main className={style.main}>
         <section className={style.product}>
             <article>
                 <Image
@@ -239,8 +240,6 @@ export default function Page({params}:any){
                 <button onClick={addInCart}>Adicionar no carrinho</button>
                 </div>
                 </form>
-             
-              
             </article>
         </section>
         </main>

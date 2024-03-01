@@ -5,13 +5,16 @@ import { GetCartItems } from "@/app/utils/getLocalStorage";
 import { useEffect, useRef } from "react";
 import style from '@/app/styles/cart.module.scss'
 import Link from "next/link";
+import './globals.css'
 
 export default function Page(){
     const tableContainer = useRef<HTMLDivElement>(null)
     const productDetailsContainer = useRef<HTMLDivElement>(null)
     const spanEmpty = useRef<HTMLSpanElement>(null)
+    const deliveryRef = useRef<HTMLParagraphElement>(null)
     const cartSumary = useRef<HTMLDivElement>(null)
     const totalWithoutDelivery = useRef<HTMLParagraphElement>(null)
+    const totalWithDelivery = useRef<HTMLParagraphElement>(null)
     function formatarNumeroComVirgulas(numero:number) {
        
         let numeroString = numero.toString();
@@ -93,7 +96,7 @@ export default function Page(){
                 
                 
                 photoContainer.append(productPhoto,productName)
-                rowProduct.append(photoContainer,productQuantity,productPrice,totalPrice)
+                rowProduct.append(photoContainer,productQuantity,productPrice)
                 productDetailsContainer.current.append(rowProduct)
                 }
             }
@@ -108,9 +111,15 @@ export default function Page(){
         },0)
 
         const formatedNumber = formatarNumeroComVirgulas(reduceTotal)
-    
-        if(totalWithoutDelivery.current){
+        
+        if(totalWithoutDelivery.current && totalWithDelivery.current && deliveryRef.current){
             totalWithoutDelivery.current.innerText = `R$ ${formatedNumber}`
+            const value = deliveryRef.current.innerText 
+            const withoutCoin = value.replace(/R\$/gm,'')
+            const withoutSeparator = withoutCoin.replace(/,\d{1,}/gm,'')
+            const valueWithDelivery = Number(reduceTotal)+Number(withoutSeparator)
+            const formateDelivery = formatarNumeroComVirgulas(valueWithDelivery)
+            totalWithDelivery.current.innerText = `R$ ${formateDelivery}`
         } 
         }
 
@@ -119,27 +128,36 @@ export default function Page(){
     return(
         <LayoutCustomer>
             <div className={style.container}>
-            <h2>Cart</h2>
+            <h2>Carrinho</h2>
             <main>
                 <span ref={spanEmpty}></span>
                 <div ref={tableContainer} className={style.table}>
                     <div className={style.headerTable}>
-                        <span>Product Details</span>
-                        <span>Quantity</span>
-                        <span>Price</span>
-                        <span>Total</span>
+                        <span>Detalhes do produto</span>
+                        <span>Quantidade</span>
+                        <span>Preço</span>
                     </div>
                     <section ref={productDetailsContainer} className={style.detailsProduct}>
                     </section>
                 </div>
 
                 <div className={style.cartSummary} ref={cartSumary}>
-                    <h4>Total</h4>
+                    <h4>Resumo do Carrinho</h4>
                     <span></span>
 
                     <div>
-                    <p>Sub-Total</p>
+                    <p>Subtotal</p>
                     <p ref={totalWithoutDelivery}></p>
+                    </div>
+
+                    <div>
+                    <p>Entrega</p>
+                    <p ref={deliveryRef}>R$ 10,00</p>
+                    </div>
+
+                    <div>
+                    <p>Total</p>
+                    <p ref={totalWithDelivery}></p>
                     </div>
 
                     <button><Link href={'cartPage/finalforms'}>CHECK OUT</Link></button>
